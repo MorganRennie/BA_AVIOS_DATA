@@ -7,7 +7,10 @@ url = 'https://www.headforpoints.com/2024/08/29/how-many-avios-do-i-need-to-fly-
 
 # Set up headers to mimic a browser request: website was set up to automatically reject access.
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+    "Referer": "https://www.google.com",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Connection": "keep-alive",
 }
 
 # Send a GET request to the URL with the headers
