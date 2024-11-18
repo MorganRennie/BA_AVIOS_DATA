@@ -1,20 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import cloudscraper
 
 # URL of the webpage, sectioned off in case it changes.
 url = 'https://www.headforpoints.com/2024/08/29/how-many-avios-do-i-need-to-fly-to-2/'
 
-# Set up headers to mimic a browser request: website was set up to automatically reject access.
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-    "Referer": "https://www.google.com",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Connection": "keep-alive",
-}
+#bring in a scraper from cloud scraper to remove the dependency on header injection.
+scraper = cloudscraper.create_scraper()
 
 # Send a GET request to the URL with the headers
-response = requests.get(url, headers=headers)
+response = scraper.get("https://www.headforpoints.com/2024/08/29/how-many-avios-do-i-need-to-fly-to-2/")
 
 # Check if the request was successful
 if response.status_code == 200:
