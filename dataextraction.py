@@ -1,16 +1,21 @@
+#This first section of code finds the datatable from the URL, extracts the column headers from the first two rows,
+#and then appends the remaining data. The new table is then saved to the parent folder.
+
+!pip install requests beautifulsoup4 pandas
+!pip install cloudscraper
+
 import requests
-from bs4 import BeautifulSoup # type: ignore
+from bs4 import BeautifulSoup
 import pandas as pd
 import cloudscraper
+
+scraper = cloudscraper.create_scraper()
 
 # URL of the webpage, sectioned off in case it changes.
 url = 'https://www.headforpoints.com/2024/08/29/how-many-avios-do-i-need-to-fly-to-2/'
 
-#bring in a scraper from cloud scraper to remove the dependency on header injection.
-scraper = cloudscraper.create_scraper()
-
-# Send a GET request to the URL with the headers
-response = scraper.get("https://www.headforpoints.com/2024/08/29/how-many-avios-do-i-need-to-fly-to-2/")
+# Send a GET request to the URL
+response = scraper.get(url)
 
 # Check if the request was successful
 if response.status_code == 200:
@@ -22,10 +27,11 @@ if response.status_code == 200:
     # Find the table by ID, if the table name changes, update the id.
     table = soup.find('figure', id='aviostable').find('table')
 
+    # if we successfully find the table: 
     if table is not None:
-        # if we successfully find the table: 
+        
         # Extract the header rows
-        header_rows = table.find_all('tr')[:2]  # Get the first two rows of headers
+        header_rows = table.find_all('tr')[:2]  # Get the first two rows for headers as the table is set up split.
 
         # Initialize headers list
         headers = []
@@ -42,6 +48,7 @@ if response.status_code == 200:
         for header1, header2 in zip(header1_cells, header2_cells):
             h1 = header1.text.strip()
             h2 = header2.text.strip()
+            
             # Merge headers if both are non-empty
             if h1 and h2:
                 merged_header = f"{h1} {h2}"
@@ -55,17 +62,16 @@ if response.status_code == 200:
                 rows.append(cells)
 
         # Create a DataFrame with the merged headers
-        df = pd.DataFrame(rows, columns=headers)  # Use the merged headers
-
-        # Check the number of columns in the data and compare with headers
-        print(f"Number of rows: {len(rows)}, Expected columns: {len(headers)}")
+        df = pd.DataFrame(rows, columns=headers)
         
         # Save the DataFrame to a CSV file
-        df.to_csv('aviostable.csv', index=False)
-        print("Data has been extracted and saved to aviostable.csv.")
-    # if the table is not found in the extracted html: 
+        df.to_csv("aviostable.csv", index=False)
+        print("Success. Saved as aviostable.csv in parent folder.")
+        
+    # else if the table is not found from the URL: 
     else:
-        print("Table not found in the HTML.")
-# if we have failed to access the website
+        print("Table not found")
+        
+# else if we have failed to access the website
 else:
     print("Failed to retrieve the webpage. Status code:", response.status_code)
