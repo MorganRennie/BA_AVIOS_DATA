@@ -17,3 +17,5 @@ Additional data was incorporated using a Large Language Model (LLM), specificall
 ## Dashboard Design & Visualization  
 
 I used **Figma** and **Excalidraw** to design the dashboard before loading the transformed data into **Tableau** for visualization.
+
+[Check out the dashboard on Tableau Public here](https://public.tableau.com/app/profile/morgan.rennie/viz/WherecanmyAviostakeme/WhereCanMyAviosTakeMe?publish=yes)
